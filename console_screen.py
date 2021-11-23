@@ -61,3 +61,22 @@ class ConsoleScreen:
       self.stdscr.addstr(row, col, strng)
       if refresh:
          self.stdscr.refresh()
+   
+   def print_status_bar(self, val, total_val):
+      row = self.board_offset_y + 16
+      col = self.board_offset_x
+      
+      self.stdscr.move(row, col)
+      self.stdscr.clrtoeol()
+
+      number_of_boxes = 50
+      val_boxes = int((val / total_val) * number_of_boxes)
+      remainder = max(0, (number_of_boxes - val_boxes))
+      val_box_str = ''
+      if val_boxes > 1:
+         val_box_str = '█' * val_boxes
+      remainder_str = ''
+      if remainder > 1:
+         remainder_str = '░' * remainder
+      self.stdscr.addstr(row, col, val_box_str + remainder_str)
+      self.stdscr.refresh()

@@ -17,17 +17,7 @@ def draw_main_board(screen):
    global board
    screen.clear_board()
    screen.draw_header()
-   # screen.draw_template(row + 4, col, board_display)
    screen.draw_template(screen.board_offset_y + 3, screen.board_offset_x, board.get_string_list())
-   
-   # screen.draw_board_display()
-   # Write Player names
-   # player_2_name = 'Player 2: ' + get_printable_name(players[1])
-   # screen.addstr(row + 10, col + 10, f'{get_printable_name(players[0])}')
-   # screen.addstr(row + 20, col, f'{player_2_name:>53}')
-
-   # draw_moves_list(screen)
-   
    screen.refresh()
 
 def draw_ai_selection(screen, player_files, player_num = 1):
@@ -41,7 +31,6 @@ def draw_ai_selection(screen, player_files, player_num = 1):
    screen.draw_menu(options)
 
 def get_ai_selection(screen, player_files, player_num = 1):
-   # opp_num = 1 if player_num == '2' else '2'
    draw_ai_selection(screen, player_files, player_num)
    
    index = 'not set'
@@ -49,6 +38,19 @@ def get_ai_selection(screen, player_files, player_num = 1):
       index = getch(list(map(str, list(range(len(player_files))))))
    
    return player_files[int(index)]
+
+def play_many_games(screen, num_games, players):
+   wins = [0,0,0]
+   for i in range(num_games):
+      screen.print_message('game: ' + str(i))
+      screen.print_status_bar(i, num_games)
+      
+      winner = play_game(screen, players, False)
+      if winner == -1:
+         wins[0] += 1
+      else:
+         wins[winner] += 1
+   return wins
 
 def play_game(screen, players, print_board_during_play=True):
    global board
@@ -62,10 +64,10 @@ def play_game(screen, players, print_board_during_play=True):
    board = MancalaBoard()
    board.set_player_names(get_printable_name(players[0]), get_printable_name(players[1]))
    player_objects = []
-   winner = ''
+   # winner = ''
    turn = 1
    move_num = -1
-   message = ''
+   # message = ''
    
    # Load the AI modules, when necessary
    for i in range(2):
@@ -113,7 +115,6 @@ def play_game(screen, players, print_board_during_play=True):
          # The other player wins
          return (turn + 1) % 2
       
-      screen.print_message(f'Player {turn} selected {move_num}.')
       board.make_move(move_num)
       
    if print_board_during_play:
@@ -122,6 +123,51 @@ def play_game(screen, players, print_board_during_play=True):
    if print_board_during_play:
       draw_main_board(screen)
    return board.get_winner()
+
+def draw_many_games_results(screen, players, wins, wins2):
+   screen.clear_board()
+   screen.draw_header()
+   
+   row = screen.board_offset_y + 4
+   col = screen.board_offset_x
+
+   screen.draw_template(row, col, multi_game_results)
+   
+   player_names = printable_players(players)
+
+   screen.addstr(row + 1, col + 2, player_names[0])
+   screen.addstr(row + 1, col + 27, player_names[1])
+
+   col += 5
+   row += 5
+   screen.addstr(row, col, f'{wins[1]:>4}')
+   screen.addstr(row+1, col, f'{wins[2]:>4}')
+   screen.addstr(row+2, col, f'{wins[0]:>4}')
+   col += 10
+   screen.addstr(row, col, f'{wins2[1]:>4}')
+   screen.addstr(row+1, col, f'{wins2[2]:>4}')
+   screen.addstr(row+2, col, f'{wins2[0]:>4}')
+   
+   col += 15
+   screen.addstr(row, col, f'{wins2[2]:>4}')
+   screen.addstr(row+1, col, f'{wins2[1]:>4}')
+   screen.addstr(row+2, col, f'{wins2[0]:>4}')
+   col += 10
+   screen.addstr(row, col, f'{wins[2]:>4}')
+   screen.addstr(row+1, col, f'{wins[1]:>4}')
+   screen.addstr(row+2, col, f'{wins[0]:>4}')
+
+   col = screen.board_offset_x + 10
+   row += 4
+   screen.addstr(row, col, f'{(wins[1] + wins2[1]):>4}')
+   screen.addstr(row + 1, col, f'{(wins[2] + wins2[2]):>4}')
+   screen.addstr(row + 2, col, f'{(wins[0] + wins2[0]):>4}')
+   
+   col += 25
+   screen.addstr(row, col, f'{(wins[2] + wins2[2]):>4}')
+   screen.addstr(row + 1, col, f'{(wins[1] + wins2[1]):>4}')
+   screen.addstr(row + 2, col, f'{(wins[0] + wins2[0]):>4}')
+
 
 def main(stdscr):
    global board
@@ -206,29 +252,26 @@ def main(stdscr):
                screen.print_message("Press <R> for a rematch", 14)
                screen.print_message("Press <Q> to return to main menu", 15)
                pause = getch(['q', 'r'])
-      #    elif sub_selection == '2':
-      #       if len(player_files) < 1:
-      #          print_message("There are no AI's in the 'players' folder to play against")
-      #          continue
-      #       num_games = 5000
-      #       wins = [0, 0, 0]
+         elif sub_selection == '2':
+            if len(player_files) < 1:
+               screen.print_message("There are no AI's in the 'players' folder to play against")
+               continue
+            num_games = 5000
+            wins = [0, 0, 0]
             
-      #       # Play two custom AI's against each other
-      #       players.append(get_ai_selection(player_files, 'X'))
-      #       # print_message(f"{get_printable_name(players[0])} will be 'X'")
-      #       players.append(get_ai_selection(player_files, 'O'))
-               
-      #       play_many_games(num_games, players, wins)
+            # Play two custom AI's against each other
+            players.append(get_ai_selection(screen, player_files, 1))
+            players.append(get_ai_selection(screen, player_files, 2))
+            
+            wins = play_many_games(screen, num_games, players)
 
-      #       players2 = players[::-1]
-      #       wins2 = [0, 0, 0]
-            
-      #       play_many_games(num_games, players2, wins2)
-            
-      #       draw_many_game_results()
-      #       print_many_games_scores(players, wins, wins2)
-      #       print_message("Press <Q> to return to the main menu", 4)
-      #       pause = getch(['q'])
+            players2 = players[::-1]
+            wins2 = [0, 0, 0]
+            wins2 = play_many_games(screen, num_games, players2)
+                        
+            draw_many_games_results(screen, players, wins, wins2)
+            screen.print_message("Press <Q> to return to the main menu", 7)
+            pause = getch(['q'])
       #    elif sub_selection == '3' or sub_selection == '4':
       #       ai_speed = 0
       #       if len(player_files) < 1:

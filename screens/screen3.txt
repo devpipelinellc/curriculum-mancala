@@ -1,0 +1,9 @@
+
+╔═════════════════════════════════════╗
+║          Mancala Mow Down           ║
+╚═════════════════════════════════════╝
+
+   Which would you like to play?
+   
+   Player (1) : goes First  
+   Player (2)

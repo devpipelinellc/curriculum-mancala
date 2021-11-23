@@ -43,7 +43,7 @@ def play_many_games(screen, num_games, players):
    wins = [0,0,0]
    for i in range(num_games):
       screen.print_message('game: ' + str(i))
-      screen.print_status_bar(i, num_games)
+      screen.print_status_bar(i, num_games, 10)
       
       winner = play_game(screen, players, False)
       if winner == -1:
@@ -171,6 +171,7 @@ def draw_many_games_results(screen, players, wins, wins2):
 
 def main(stdscr):
    global board
+   global ai_speed
    screen = ConsoleScreen(stdscr)
    screen.set_header(header_display)
    player_files = load_player_files()     
@@ -272,37 +273,38 @@ def main(stdscr):
             draw_many_games_results(screen, players, wins, wins2)
             screen.print_message("Press <Q> to return to the main menu", 7)
             pause = getch(['q'])
-      #    elif sub_selection == '3' or sub_selection == '4':
-      #       ai_speed = 0
-      #       if len(player_files) < 1:
-      #          print_message("There are no AI's in the 'players' folder to play against")
-      #          continue
-      #       num_games = 10000
+         elif sub_selection == '3' or sub_selection == '4':
+            original_ai_speed = ai_speed
+            ai_speed = 0
+            if len(player_files) < 1:
+               screen.print_message("There are no AI's in the 'players' folder to play against")
+               continue
+            num_games = 10000
             
-      #       # Play two custom AI's against each other
-      #       first_player = get_ai_selection(player_files, 'X')
-      #       print_message(f"X: {get_printable_name(first_player)}")
-      #       players.append(first_player)
+            # Play two custom AI's against each other
+            first_player = get_ai_selection(screen, player_files, 1)
+            screen.print_message(f"Player 1: {get_printable_name(first_player)}")
+            players.append(first_player)
 
-      #       players.append(get_ai_selection(player_files, 'O'))
+            players.append(get_ai_selection(screen, player_files, 2))
 
-      #       play_until_letter_wins = 'X'
-      #       if sub_selection == '4':
-      #          play_until_letter_wins = 'O'
+            play_until_player_num_wins = 1
+            if sub_selection == '4':
+               play_until_player_num_wins = 2
             
-      #       while num_games > 0:
-      #          winner = play_game(players)
-      #          if winner >= 0 and symbols[winner] == play_until_letter_wins:
-      #             print_message(f"{get_printable_name(players[winner])} as {symbols[winner]}, is the Winner!")
-      #             break
-      #          num_games -= 1
+            while num_games > 0:
+               winner = play_game(screen, players)
+               if winner > 0 and winner == play_until_player_num_wins:
+                  screen.print_message(f"{get_printable_name(players[winner - 1])} as Player {winner}, is the Winner!")
+                  break
+               num_games -= 1
                
-      #       if num_games == 0:
-      #          print_message(f"{play_until_letter_wins} did not win any games!", 1)
+            if num_games == 0:
+               screen.print_message(f"Player {play_until_player_num_wins} did not win any games!", 1)
             
-      #       print_message("Press <Q> to return to the main menu", 4)
-      #       pause = getch(['q'])
-      #       ai_speed = .3
+            screen.print_message("Press <Q> to return to the main menu", 14)
+            ai_speed = original_ai_speed
+            pause = getch(['q'])
 
       elif selection == 'q':
          break

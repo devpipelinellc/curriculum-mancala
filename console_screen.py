@@ -62,8 +62,8 @@ class ConsoleScreen:
       if refresh:
          self.stdscr.refresh()
    
-   def print_status_bar(self, val, total_val):
-      row = self.board_offset_y + 16
+   def print_status_bar(self, val, total_val, row_offset=16):
+      row = self.board_offset_y + row_offset
       col = self.board_offset_x
       
       self.stdscr.move(row, col)

@@ -66,7 +66,7 @@ class MancalaBoard:
          return 1
       return -1
 
-   def is_valid_move(self, move_num):
+   def is_valid_move(self, move_num, player_num = 1):
       if 1 <= move_num <= 6:
          idx = self.get_index_from_move(move_num)
          return self.board[idx] > 0
@@ -198,7 +198,7 @@ Player 1: {self.player_1}
          raise InvalidMoveException(f'Move {move_num} is invalid for Player {player_num}')
    
       test_board = MancalaBoard(player_num, self.board.copy(), deep_copy_list(self.__moves))
-      return test_board.make_move(move_num, player_num)
+      return test_board.make_move(move_num)
 
    # def print_test(self, move_num):
    #    print(f'Player {self.player_num} moves {move_num}')

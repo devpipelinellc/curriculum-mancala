@@ -9,7 +9,7 @@ from getch import getch
 from screens import *
 from MancalaBoard import *
 
-ai_speed = 2
+ai_speed = 1
 
 board = MancalaBoard()
 

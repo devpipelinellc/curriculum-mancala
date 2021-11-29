@@ -41,6 +41,11 @@ class MancalaBoard:
    def get_stones(self):
       return self.board
 
+   def get_my_mancala_idx(self, player_num = None):
+      if player_num == None:
+         player_num = self.player_num
+      return 0 if player_num == 2 else 7
+
    def is_game_over(self):
       return sum(self.board[1:7]) == 0 or sum(self.board[8:14]) == 0
    
@@ -175,9 +180,12 @@ Player 1: {self.player_1}
 
    #
    # Gets a list of all valid moves for the current player
-   def get_valid_moves(self):
+   def get_valid_moves(self, player_num = None):
+      if not player_num:
+         player_num = self.player_num
+
       valid_moves = []
-      idx = 1 + ((self.player_num - 1) * 7)
+      idx = 1 + ((player_num - 1) * 7)
       for i in range(6):
          # print(f'{idx + i} = {self.board[idx + i]}')
          if self.board[idx + i] > 0:

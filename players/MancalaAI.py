@@ -13,5 +13,5 @@ class MancalaAI:
    # Your function will need to return a valid move as an integer
    # between 1 and 6.
    def get_move(self, board):
-      return None
+      return 10
    

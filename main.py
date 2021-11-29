@@ -46,7 +46,7 @@ def play_many_games(screen, num_games, players):
       screen.print_status_bar(i, num_games, 10)
       
       winner = play_game(screen, players, False)
-      if winner == -1:
+      if winner <= 0:
          wins[0] += 1
       else:
          wins[winner] += 1
@@ -75,7 +75,6 @@ def play_game(screen, players, print_board_during_play=True):
          player_objects.append(None)
       else:
          module_name = importlib.import_module('players.' + players[i])
-         
          class_name = get_class_name(players[i])
          ai_class = getattr(module_name, class_name)
          ai_instance = ai_class(i+1)
@@ -144,13 +143,13 @@ def draw_many_games_results(screen, players, wins, wins2):
    screen.addstr(row+1, col, f'{wins[2]:>4}')
    screen.addstr(row+2, col, f'{wins[0]:>4}')
    col += 10
-   screen.addstr(row, col, f'{wins2[1]:>4}')
-   screen.addstr(row+1, col, f'{wins2[2]:>4}')
+   screen.addstr(row, col, f'{wins2[2]:>4}')
+   screen.addstr(row+1, col, f'{wins2[1]:>4}')
    screen.addstr(row+2, col, f'{wins2[0]:>4}')
    
    col += 15
-   screen.addstr(row, col, f'{wins2[2]:>4}')
-   screen.addstr(row+1, col, f'{wins2[1]:>4}')
+   screen.addstr(row, col, f'{wins2[1]:>4}')
+   screen.addstr(row+1, col, f'{wins2[2]:>4}')
    screen.addstr(row+2, col, f'{wins2[0]:>4}')
    col += 10
    screen.addstr(row, col, f'{wins[2]:>4}')
@@ -159,13 +158,13 @@ def draw_many_games_results(screen, players, wins, wins2):
 
    col = screen.board_offset_x + 10
    row += 4
-   screen.addstr(row, col, f'{(wins[1] + wins2[1]):>4}')
-   screen.addstr(row + 1, col, f'{(wins[2] + wins2[2]):>4}')
+   screen.addstr(row, col, f'{(wins[1] + wins2[2]):>4}')
+   screen.addstr(row + 1, col, f'{(wins[2] + wins2[1]):>4}')
    screen.addstr(row + 2, col, f'{(wins[0] + wins2[0]):>4}')
    
    col += 25
-   screen.addstr(row, col, f'{(wins[2] + wins2[2]):>4}')
-   screen.addstr(row + 1, col, f'{(wins[1] + wins2[1]):>4}')
+   screen.addstr(row, col, f'{(wins[2] + wins2[1]):>4}')
+   screen.addstr(row + 1, col, f'{(wins[1] + wins2[2]):>4}')
    screen.addstr(row + 2, col, f'{(wins[0] + wins2[0]):>4}')
 
 

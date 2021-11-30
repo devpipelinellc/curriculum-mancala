@@ -42,6 +42,7 @@ multi_game_results = [
 main_menu_options = [
    "(1) 1 Player",
    "(2) 2 Players (Custom AI's)",
+   "(3) 2 Humans",
    "(Q) Quit"
 ]
 
@@ -54,7 +55,7 @@ player_select_options = [
 
 num_games_options = [
    "(1) 1 Game",
-   "(2) 10,000 Games",
+   "(2) 1,000 Games",
    "(3) Play Until Player 1 Wins (max 10k)",
    "(4) Play Until Player 2 Wins (max 10k)"
 ]

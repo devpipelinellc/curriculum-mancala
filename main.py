@@ -183,7 +183,7 @@ def main(stdscr):
 
    while selection and selection.lower() != 'q':
       players = []
-      selection = getch(['1', '2', 'q'])
+      selection = getch(['1', '2', '3', 'q'])
 
       if selection == '1':
          if len(player_files) < 1:
@@ -256,7 +256,7 @@ def main(stdscr):
             if len(player_files) < 1:
                screen.print_message("There are no AI's in the 'players' folder to play against")
                continue
-            num_games = 5000
+            num_games = 500
             wins = [0, 0, 0]
             
             # Play two custom AI's against each other
@@ -278,7 +278,7 @@ def main(stdscr):
             if len(player_files) < 1:
                screen.print_message("There are no AI's in the 'players' folder to play against")
                continue
-            num_games = 10000
+            num_games = 1000
             
             # Play two custom AI's against each other
             first_player = get_ai_selection(screen, player_files, 1)
@@ -304,6 +304,23 @@ def main(stdscr):
             screen.print_message("Press <Q> to return to the main menu", 14)
             ai_speed = original_ai_speed
             pause = getch(['q'])
+
+      if selection == '3': # Two Human Players
+         players.append('Human')
+         players.append('Human')
+         
+         char = 'r'
+         while char == 'r':
+            winner = play_game(screen, players)
+            # Print winner
+            screen.print_message("Game Over!")
+            if winner == -1:
+               screen.print_message("Tie Game! No winner.", 13)
+            else:
+               screen.print_message(f"{get_printable_name(players[winner - 1])} as Player {winner}, is the Winner!", 13)
+            screen.print_message("Press <R> for a rematch", 14)
+            screen.print_message("Press <Q> to return to main menu", 15)
+            char = getch(['q', 'r'])
 
       elif selection == 'q':
          break

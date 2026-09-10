@@ -31,10 +31,14 @@ class ConsoleScreen:
 
 #    def refresh(self):
 
-    def draw_template(self, row, col, template_rows, strip=False):
+    def draw_template(self, row, col, template_rows, variables=[], strip=False):
+        var_idx = 0
         for line in template_rows:
             if strip:
                 line = line.strip()
+            if '%%' in line:
+                line = line.replace('%%', str(variables[var_idx]))
+                var_idx += 1
             ansi_lib.addstr(row, col, line)
             row += 1
         # ansi_lib.refresh()
@@ -42,13 +46,13 @@ class ConsoleScreen:
     def draw_header(self):
         self.draw_template(self.board_offset_y, self.board_offset_x, self.header_display)
 
-    def draw_menu(self, options):
+    def draw_menu(self, template_rows, variables=[]):
         ansi_lib.clear()
         ansi_lib.reset()
         self.draw_header()
         row = self.board_offset_y + 4
         col = self.board_offset_x + 3
-        self.draw_template(row, col, options)
+        self.draw_template(row, col, template_rows, variables)
 
     def print_message(self, message, row_offset=0):
         row = self.board_offset_y + 11 + row_offset

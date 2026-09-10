@@ -1,6 +1,8 @@
 from util import *
 from time import sleep
 import importlib
+import signal
+import sys
 
 from getch import getch
 from MancalaBoard import *
@@ -13,12 +15,19 @@ board = MancalaBoard()
 screen = ConsoleScreen()
 
 
+def signal_handler(sig, frame):
+    print("\nGame ended by user (Ctrl+C pressed)")
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)
+
+
 def draw_main_board(screen):
     global board
     screen.clear_board()
     screen.draw_header()
     screen.draw_template(screen.board_offset_y + 3, screen.board_offset_x, board.get_string_list())
-    # screen.refresh()
 
 
 def draw_ai_selection(screen, player_files, player_num=1):
@@ -65,7 +74,7 @@ def play_game(screen, players, print_board_during_play=True):
         raise Exception("Two players required to play the game!")
 
     # Initialize the board
-    board = MancalaBoard()
+    board.reset()
     board.set_player_names(get_printable_name(players[0]), get_printable_name(players[1]))
     player_objects = []
     # winner = ''
@@ -191,7 +200,7 @@ def main(screen):
 
         while selection and selection.lower() != 'q':
             players = []
-            selection = getch(['1', '2', '3', 'q'])
+            selection = getch(['1', '2', '3', 'o', 'q'])
 
             if selection == '1':
                 if len(player_files) < 1:
@@ -313,7 +322,7 @@ def main(screen):
                     ai_speed = original_ai_speed
                     pause = getch(['q'])
 
-            if selection == '3':  # Two Human Players
+            elif selection == '3':  # Two Human Players
                 players.append('Human')
                 players.append('Human')
 
@@ -330,9 +339,18 @@ def main(screen):
                     screen.print_message("Press <Q> to return to main menu", 15)
                     char = getch(['q', 'r'])
 
+            elif selection == 'o':
+                screen.draw_menu(screen_templates.options_menu, [board.starting_stones])
+                sub_selection = getch(['1', 'q'])
+                if sub_selection == '1':
+                    screen.draw_menu(screen_templates.change_starting_stones)
+                    new_stone_count = getch(['2', '3', '4', '5'])
+                    board.set_starting_stones(int(new_stone_count))
+                    screen.print_message(f"Starting stones changed to {new_stone_count}. Press <Q> to return to main menu", 14)
+                    _ = getch(['q'])
             elif selection == 'q':
                 break
-
+            screen.clear()
             screen.draw_menu(screen_templates.main_menu_options)
     finally:
         screen.show_cursor()
@@ -340,4 +358,5 @@ def main(screen):
         screen.clear()
 
 
-main(screen)
+if __name__ == "__main__":
+    main(screen)

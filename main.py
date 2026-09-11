@@ -1,8 +1,6 @@
 from util import *
 from time import sleep
 import importlib
-import signal
-import sys
 
 from getch import getch
 from MancalaBoard import *
@@ -13,14 +11,6 @@ ai_speed = 1
 
 board = MancalaBoard()
 screen = ConsoleScreen()
-
-
-def signal_handler(sig, frame):
-    print("\nGame ended by user (Ctrl+C pressed)")
-    sys.exit(0)
-
-
-signal.signal(signal.SIGINT, signal_handler)
 
 
 def draw_main_board(screen):
@@ -359,4 +349,10 @@ def main(screen):
 
 
 if __name__ == "__main__":
-    main(screen)
+    try:
+        main(screen)
+    except KeyboardInterrupt:
+        screen.show_cursor()
+        screen.reset()
+        screen.clear()
+        print("\nGame ended by user (Ctrl+C pressed)\n")

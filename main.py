@@ -205,13 +205,13 @@ def draw_many_games_results(screen, players, p1_results, p2_results):
 
     col = col = screen.board_offset_x + 11
     row += 4
-    screen.addstr(row, col, f'{sum([p1_results[0][1], p1_results[1][1], p1_results[2][1], p1_results[3][2], p1_results[4][2], p1_results[5][2]]):>4}')
-    screen.addstr(row+1, col, f'{sum([p1_results[0][2], p1_results[1][2], p1_results[2][2], p1_results[3][1], p1_results[4][1], p1_results[5][1]]):>4}')
+    screen.addstr(row, col, f'{sum([p1_results[0][1], p1_results[1][2], p1_results[2][1], p1_results[3][2], p1_results[4][1], p1_results[5][2]]):>4}')
+    screen.addstr(row+1, col, f'{sum([p1_results[0][2], p1_results[1][1], p1_results[2][2], p1_results[3][1], p1_results[4][2], p1_results[5][1]]):>4}')
     screen.addstr(row+2, col, f'{sum([p1_results[0][0], p1_results[1][0], p1_results[2][0], p1_results[3][0], p1_results[4][0], p1_results[5][0]]):>4}')
 
     col += 54
-    screen.addstr(row, col, f'{sum([p2_results[0][2], p2_results[1][2], p2_results[2][2], p2_results[3][1], p2_results[4][1], p2_results[5][1]]):>4}')
-    screen.addstr(row+1, col, f'{sum([p2_results[0][1], p2_results[1][1], p2_results[2][1], p2_results[3][2], p2_results[4][2], p2_results[5][2]]):>4}')
+    screen.addstr(row, col, f'{sum([p2_results[0][1], p2_results[1][2], p2_results[2][1], p2_results[3][2], p2_results[4][1], p2_results[5][2]]):>4}')
+    screen.addstr(row+1, col, f'{sum([p2_results[0][2], p2_results[1][1], p2_results[2][2], p2_results[3][1], p2_results[4][2], p2_results[5][1]]):>4}')
     screen.addstr(row+2, col, f'{sum([p2_results[0][0], p2_results[1][0], p2_results[2][0], p2_results[3][0], p2_results[4][0], p2_results[5][0]]):>4}')
 
 

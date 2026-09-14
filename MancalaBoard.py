@@ -216,29 +216,3 @@ Player 1: {self.player_1}
 
         test_board = MancalaBoard(self.starting_stones, player_num, self.board.copy(), deep_copy_list(self.__moves))
         return test_board.make_move(move_num)
-
-    # def print_test(self, move_num):
-    #    print(f'Player {self.player_num} moves {move_num}')
-    #    self.make_move(move_num)
-    #    print(self)
-    #    print(self.get_valid_moves())
-    #    print()
-
-# board = MancalaBoard(moves_list = [ [3,2,4,2], [1,2,1,3] ])
-
-# print(board)
-# try:
-#    moves = [4,3,1,5,6,3,1]
-#    for m in moves:
-#       board.print_test(m)
-# except InvalidMoveException as e:
-#    print(e)
-
-# print(board.get_string_list())
-
-# board_copy = board.clone()
-
-# moves = board_copy.get_moves()
-# print(moves)
-
-# print(board.get_valid_moves())

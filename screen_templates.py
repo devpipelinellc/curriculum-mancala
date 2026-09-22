@@ -83,7 +83,8 @@ player_select_options = [
 
 num_games_options = [
     "(1) 1 Game",
-    "(2) 1,000 Games",
-    "(3) Play Until Player 1 Wins (max 10k)",
-    "(4) Play Until Player 2 Wins (max 10k)"
+    "(2) 3000 Games (500 per side per size)",
+    "(3) 600 Games (100 per side per size)",
+    "(4) Play Until Player 1 Wins (max 10k)",
+    "(5) Play Until Player 2 Wins (max 10k)"
 ]

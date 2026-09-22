@@ -107,7 +107,8 @@ def play_game(screen, players, print_board_during_play=True):
                 move_num = int(my_move)
             else:
                 # If player is AI, get the move from the AI
-                move_num = (player_objects[turn_idx]).get_move(board)
+                board_copy = board.clone()
+                move_num = (player_objects[turn_idx]).get_move(board_copy)
                 if print_board_during_play and ai_speed > 0:
                     screen.print_message(f'Player {turn} selected {move_num}.')
                     sleep(ai_speed)
@@ -315,9 +316,9 @@ def main(screen):
                             screen.print_message("Press <R> for a rematch", 14)
                             screen.print_message("Press <Q> to return to main menu", 15)
                             pause = getch(['q', 'r'])
-                    elif sub_selection == '2':  # Play two custom AI's against each other for 1,000 games (per starting_stone size) and display the results
+                    elif sub_selection == '2' or sub_selection == '3':  # Play two custom AI's against each other for 500 games (per side per starting_stone size) and display the results
 
-                        num_games = 500
+                        num_games = 500 if sub_selection == '2' else 100
 
                         # Results will be stored in these lists, which will be used to display the results
                         # The format will be [[[wins, losses, ties], [wins,losses, ties]], [[wins, losses, ties], [wins,losses, ties]], [[wins, losses, ties], [wins,losses, ties]]]
@@ -352,7 +353,8 @@ def main(screen):
                         board.set_starting_stones(original_starting_stones)
                         screen.print_message("Press <Q> to return to the main menu", 9)
                         pause = getch(['q'])
-                    elif sub_selection == '3' or sub_selection == '4':
+
+                    elif sub_selection == '4' or sub_selection == '5':
                         original_ai_speed = ai_speed
                         ai_speed = 0
 
@@ -366,7 +368,7 @@ def main(screen):
                         players.append(get_ai_selection(screen, player_files, 2))
 
                         play_until_player_num_wins = 1
-                        if sub_selection == '4':
+                        if sub_selection == '5':
                             play_until_player_num_wins = 2
 
                         while num_games > 0:
